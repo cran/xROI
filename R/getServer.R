@@ -34,9 +34,6 @@
 #' @importFrom stats approx na.omit sd quantile
 #' @importFrom utils data download.file read.csv read.table setTxtProgressBar txtProgressBar unzip write.table zip
 #'
-#' @examples
-#' exampleDir <- system.file('example', package = "xROI")
-#' server <- getServer(exampleDir)
 #'
 getServer <- function(exdir, inputDir = NULL){
   return(function(input, output, session) {
@@ -46,7 +43,6 @@ getServer <- function(exdir, inputDir = NULL){
                          MASKs = list(),
                          slideShow = 0,
                          filetbl = NULL,
-                         # filelist = '.',
                          folderpath = exdir, #paste0(gettmpdir(), '/example'), #'./example',
                          # withDate = FALSE,
                          # roots = list('Working directory'='.', Home='~', root='/'),
@@ -54,7 +50,17 @@ getServer <- function(exdir, inputDir = NULL){
                          cli = NULL,
                          cliclickID = NULL)
 
+
     roots = list('Example'= exdir, Home='~', root='/')
+    if(Sys.info()['sysname']=='Windows'){
+      volumes <- system("wmic logicaldisk get name", intern = T)
+      volumes <- sub(" *\\r$", "", volumes)
+      keep <- !tolower(volumes) %in% c("name", "")
+      volumes <- volumes[keep]
+      names(volumes) <- volumes
+      roots <- c('Example'= exdir, Home=path.expand('~/../'), volumes)
+    }
+
     observe({
       if(!is.null(inputDir)) rv$folderpath <- inputDir
     })
@@ -66,64 +72,84 @@ getServer <- function(exdir, inputDir = NULL){
 
     observe({
       if(is.null(input$folderpath)) return()
-      rv$folderpath <- parseDirPath(roots, selection = input$folderpath)
+
+      tmp <- parseDirPath(roots, selection = input$folderpath)
+      if(length(tmp)!=0)rv$folderpath <- tmp
     })
 
     output$folderpath <- renderUI({
       basename(rv$folderpath)
     })
 
-    observeEvent(rv$folderpath,{
-      dummy <- 0
+    observe({
+      # observeEvent(rv$folderpath,{
+        dummy <- 0
       dir.create(roipath())
       rv$imgs <- dir(rv$folderpath, pattern = '*.jpg', full.names = T)
 
-      f <- paste(rv$folderpath, 'filelist.csv', sep = '/')
+      if(input$fileload=='phenocam'){
+        tmp <- try(parsePhenocamFilenames(basename(rv$imgs)))
+        if(class(tmp)!='try-error'&nrow(tmp)>0) {
+          rv$filetbl <- tmp
+          rv$filetbl[,path:=rv$imgs]
+        }else{
+          updateRadioButtons(session = session, inputId = 'fileload', selected = 'filelist')
 
-      if(!file.exists(f)){
-        showModal(strong(modalDialog(paste(f, ' was not found!'),
-                                     style='background-color:#3b3a35; color:#fce319; ',
-                                     footer =  modalButton("OK"),
-                                     easyClose = F, size = 's')))
-        return()
+          showModal(strong(modalDialog(html('no file with phenocam format was found; switched to filelist mode.'),
+                                       style='background-color:#3b3a35; color:#fce319; ',
+                                       footer =  modalButton("OK"),
+                                       easyClose = F, size = 's')))
+          return()
+
+        }
+
+      }else{
+        filelistcsv <- paste(rv$folderpath, 'filelist.csv', sep = '/')
+
+        if(!file.exists(filelistcsv)){
+          showModal(strong(modalDialog(paste(filelistcsv, ' was not found!'),
+                                       style='background-color:#3b3a35; color:#fce319; ',
+                                       footer =  modalButton("OK"),
+                                       easyClose = F, size = 's')))
+          return()
+        }
+
+        tbl <- try(read.csv(filelistcsv, colClasses = c('character', rep('integer', 6)), header = F), silent = T)
+
+        if(class(tbl)=='try-error'){
+          showModal(strong(modalDialog(as.character(tbl),
+                                       style='background-color:#3b3a35; color:#fce319; ',
+                                       footer = NULL,
+                                       easyClose = T,
+                                       size = 'm')))
+          return()
+        }
+
+        if(nrow(tbl)!=length(rv$imgs)){
+          showModal(strong(modalDialog('# of rows in filelist.csv not match with number of files!',
+                                       style='background-color:#3b3a35; color:#fce319; ',
+                                       footer =  modalButton("OK"),
+                                       easyClose = F, size = 's')))
+          return()
+        }
+
+        if(ncol(tbl)!=7){
+          showModal(strong(modalDialog('filelist.csv should have 7 columns: filename, year, month, day, hour, minute, second',
+                                       style='background-color:#3b3a35; color:#fce319; ',
+                                       footer =  modalButton("OK"),
+                                       easyClose = F, size = 'm')))
+          return()
+        }
+        colnames(tbl) <- c('filename', 'Year','Month','Day','Hour','Minute','Second')
+        rv$filetbl <- as.data.table(tbl)
+        rv$filetbl[,path:=paste0(rv$folderpath, '/',filename)]
+        rv$filetbl[,DateTime:=as.POSIXct(paste(Year, Month, Day, Hour, Minute, Second), format='%Y %m %d %H %M %S')]
       }
 
-      rv$filelist <- f
-
-      tbl <- try(read.csv(rv$filelist, colClasses = c('character', rep('integer', 6)), header = F), silent = T)
-
-      if(class(tbl)=='try-error'){
-        showModal(strong(modalDialog(as.character(tbl),
-                                     style='background-color:#3b3a35; color:#fce319; ',
-                                     footer = NULL,
-                                     easyClose = T,
-                                     size = 'm')))
-        return()
-      }
-
-      if(nrow(tbl)!=length(rv$imgs)){
-        showModal(strong(modalDialog('# of rows in filelist.csv not match with number of files!',
-                                     style='background-color:#3b3a35; color:#fce319; ',
-                                     footer =  modalButton("OK"),
-                                     easyClose = F, size = 's')))
-        return()
-      }
-
-      if(ncol(tbl)!=7){
-        showModal(strong(modalDialog('filelist.csv should have 7 columns: filename, year, month, day, hour, minute, second',
-                                     style='background-color:#3b3a35; color:#fce319; ',
-                                     footer =  modalButton("OK"),
-                                     easyClose = F, size = 'm')))
-        return()
-      }
-      colnames(tbl) <- c('filename', 'Year','Month','Day','Hour','Minute','Second')
-      rv$filetbl <- as.data.table(tbl)
-      rv$filetbl[,path:=paste0(rv$folderpath, '/',filename)]
-      rv$filetbl[,DateTime:=as.POSIXct(paste(Year, Month, Day, Hour, Minute, Second), format='%Y %m %d %H %M %S')]
       rv$filetbl <- rv$filetbl[order(DateTime),]
       rv$filetbl[,ID:=1:.N]
 
-      updateDateInput(session, 'maskStartDate', value = strftime(rv$filetbl$DateTime[1], format="%Y-%m-%d"))
+            updateDateInput(session, 'maskStartDate', value = strftime(rv$filetbl$DateTime[1], format="%Y-%m-%d"))
       updateTextInput(session, inputId = 'maskStartTime', value = strftime(rv$filetbl$DateTime[1], format="%H:%M:%S"))
 
       updateDateInput(session, 'maskEndDate', value = strftime(rv$filetbl$DateTime[max(rv$filetbl$ID)], format="%Y-%m-%d"))
@@ -579,6 +605,7 @@ getServer <- function(exdir, inputDir = NULL){
     # ----------------------------------------------------------------------
     observeEvent(input$roiName,{
       if(input$roiName=='') return()
+      if(is.null(rv$filetb)) return()
       rv$slideShow <- 0
       if(input$roiName=='New ROI') {
         shinyjs::enable('vegType')

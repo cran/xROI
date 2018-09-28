@@ -31,8 +31,6 @@
 #' @importFrom stats approx na.omit sd quantile
 #' @importFrom utils data download.file read.csv read.table setTxtProgressBar txtProgressBar unzip write.table zip
 #'
-#' @examples
-#' ui <- getUI()
 #'
 getUI <- function(){
   return(fluidPage(
@@ -66,6 +64,7 @@ background-color: #808080;
                             #                      "text/comma-separated-values,text/plain",
                             #                      ".csv")),
 
+                            radioButtons(inputId = 'fileload', label = 'File load', choices = c('Phenocam format'='phenocam', 'From filelist.csv'='filelist')),
                             fluidRow(
                               column(4, shinyDirButton('folderpath', label='Images directory',
                                                        title='Select the directory of images')),
