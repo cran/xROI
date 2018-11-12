@@ -1,4 +1,4 @@
-083e4fda514c6b608efaed5695c9bed4 *DESCRIPTION
+b72a0273bfba74122049025bf79ee8cf *DESCRIPTION
 d970d39e9fe3106a0e1ea0ae40bf5c56 *NAMESPACE
 20b179b35210134ca4feaf9567adf4d7 *NEWS.md
 5a29fc77ca36e09dcb91b890c8c937dc *R/Launch.R
@@ -18,12 +18,12 @@ efcf732463b7a13bdebed99f7e0f81df *R/getServer.R
 dbac6b759e1d75a745f3cbff96f493df *R/rasterizeROI.R
 3c446faf5906f169670ac5ec02c6177e *R/writeROI.R
 20b1b1d0a6ba98e8bf9623d04693352e *R/zzz.R
-fbc7993adf732bac679773171e8126ad *README.md
+64119a5d8580cda7ad5a971c8db1f592 *README.md
 815b9c268141c64b751404f5e76cd449 *build/vignette.rds
 7cc1a4ddcb9ee4ac01c0d3b39529565c *inst/CITATION
-7324ed14c2433f9f47ac3f5841dea8ca *inst/doc/Launch-xROI.R
-0f0c8291999ea57cdb6dc52bf4a77b3e *inst/doc/Launch-xROI.Rmd
-5731656eafdcf50df645fc9850cbe9a1 *inst/doc/Launch-xROI.html
+fd2c56b0d37fae60ce0e5262c95e1128 *inst/doc/Launch-xROI.R
+e92995e90aee1f7ecf2b012ffcaf84d3 *inst/doc/Launch-xROI.Rmd
+62be43806e6f526aae8bb2485ed072ed *inst/doc/Launch-xROI.html
 c1a552e363845a402d95fdcf569c59ad *inst/dukehw-cli.jpg
 03dfc2a1b7a3a5aa6aa2ebfa2191999d *inst/dukehw-mask.tif
 e08b82b0635a3266713866fbf09cf142 *inst/dukehw.jpg
@@ -74,4 +74,4 @@ ad3feb0d30ea8df6500abeb1870c8dfc *man/plotCLArray.Rd
 00f0676b8b3e06b65b25f9278c992bc4 *man/writeROI.Rd
 66c2a63ce43fcc2efb84444ac16ca20d *tests/testthat.R
 b374fcbde0ae01a7cb93dd8d7811cbf4 *tests/testthat/testxROI.R
-0f0c8291999ea57cdb6dc52bf4a77b3e *vignettes/Launch-xROI.Rmd
+e92995e90aee1f7ecf2b012ffcaf84d3 *vignettes/Launch-xROI.Rmd
