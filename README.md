@@ -58,7 +58,7 @@ Launch()
 
 ```
 
-or form the command line (e.g. shell in Linux, Terminal in macOS and Command Prompt in Windows machines) where an R engine is already installed by:
+or form the command line (e.g., shell in Linux, Terminal in macOS and Command Prompt in Windows machines) where an R engine is already installed by:
 
 ```{r, echo=TRUE, eval=FALSE}
 
@@ -72,16 +72,30 @@ Calling the Launch function opens up the app in the system’s default web brows
 
 Follow the steps below:
 
-1. Draw and ROI, enter the metadata. 
+1. Draw an ROI by clicking on the sample image and enter the metadata. 
 
-2. Save the metadata and explore its content.
+2. Save the ROI and metadata and explore its content on your computer.
 
 3. Explore if there is any FOV shift in the dataset using the `CLI processer` tab.
 
 4. Go to the `Time series extraction` tab. Extract the time-series. Save the output and explore the dataset in R.
 
 
+## Loading files from disk
+By default, xROI can load images and their timings from the filenames (according to the PhenoCam naming convention: sitename_YYYY_MM_DD_HHMMSS.jpg, where it includes the site name, date and time). However, if the files are not named in this format, the user can select the option "From filelist.csv". In this case, the software looks for a comma separated file named “filelist.csv” in the selected directory,to obtain information about how to properly load the dataset. The filelist.csv file contains a list of images and their associated timing and is formatted in comma-separated-values format as follows. The user is responsible for generating the filelist.csv file. Each row includes 1 column for the filename as character strings and six columns for year, month, day, hour, minute and second of the acquisition date and time, in that order. An example file is presented in Appendix A: filelist.csv. User can explore loaded images using the exploring panel.
 
+Here is an example:
+```{}"dukehw_2015_01_01_120109.jpg",2015,1,1,12,1,9
+"dukehw_2015_01_15_120109.jpg",2015,1,15,12,1,9
+"dukehw_2015_02_01_120110.jpg",2015,2,1,12,1,10
+"dukehw_2015_02_15_120110.jpg",2015,2,15,12,1,10
+"dukehw_2015_03_01_120107.jpg",2015,3,1,12,1,7
+"dukehw_2015_03_15_120108.jpg",2015,3,15,12,1,8
+"dukehw_2015_04_01_120111.jpg",2015,4,1,12,1,11
+"dukehw_2015_04_15_120111.jpg",2015,4,15,12,1,11
+"dukehw_2015_05_01_120108.jpg",2015,5,1,12,1,8
+"dukehw_2015_05_15_120110.jpg",2015,5,15,12,1,10
+```
 
 ## End xROI
 
