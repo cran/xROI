@@ -7,19 +7,10 @@
 #' @keywords  Run Launch xROI App
 #' @export
 #' @import shiny
-#' @rawNamespace import(shinyjs, except = c(runExample, updateColourInput, reset, colourPicker, colourInput, show, click, removeClass))
-#' @import shinythemes
-#' @rawNamespace import(plotly, except = select)
-#' @rawNamespace import(raster, except = quantile)
 #' @import rgdal
 #' @import sp
 #' @import jpeg
 #' @import tiff
-#' @import shinyBS
-#' @import shinyAce
-#' @import shinyTime
-#' @import shinyFiles
-#' @import shinydashboard
 #' @rawNamespace import(colourpicker, except = runExample)
 #' @import rjson
 #' @import RCurl
@@ -47,9 +38,12 @@ Launch <- function(inputDir= NULL,
   exampleDir <- file.path(tmpdir, 'example')
   ## Only run examples in interactive R sessions
   if (interactive()|Interactive) {
-    ui <- getUI()
-    server <- getServer(exampleDir, inputDir)
-    shinyApp(ui, server, options = list(launch.browser = TRUE))
+    # ui <- getUI()
+    # server <- getServer(exampleDir, inputDir)
+    # shinyApp(ui, server, options = list(launch.browser = TRUE))
+    appDir <- system.file('app', package = "xROI")
+    writeLines(c(exampleDir, inputDir), paste0(tempdir(), '/ex_in_dir.tmp'))
+    shinyAppDir(appDir = appDir, options = list(launch.browser = TRUE))
   }else{
     print('This function requires an interactive R session!')
   }
