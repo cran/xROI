@@ -30,7 +30,7 @@ addMask <- function(mask, add = TRUE, col='black'){
   rmask <- raster('tmp.tif')
   rmask[rmask!=0] <- NA
 
-  plot(rmask,legend=F, add=add, col=col)
+  if( interactive()) plot(rmask,legend=F, add=add, col=col)
   file.remove('tmp.tif')
   setwd(wd)
   return(0)
