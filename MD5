@@ -1,8 +1,8 @@
-5a45df5865e1f49a9e4e343a29ebf543 *DESCRIPTION
+94208efbf5c6d8b99e513cab42c21a29 *DESCRIPTION
 a9f3b8e5596e017078bae1754337fd93 *NAMESPACE
 20b179b35210134ca4feaf9567adf4d7 *NEWS.md
 0cf0a9da1558266b1278d4d09d9e91b7 *R/Launch.R
-dda22ce37430b772ff0a900be1b582bd *R/addMask.R
+77a18f9ce8557e5969dcf2d02448bfb9 *R/addMask.R
 1437981d5335ab24ae4e631795105a2c *R/detectShifts.R
 abceb3d7c259cfa1aa6b29a6c0e89c7d *R/drawPolygon.R
 1b9849a5a5215ad8a929b1a14dc83cb1 *R/extractCCC.R
@@ -24,7 +24,7 @@ ea47ce3258a20a5f8dbfab8e004ba7b3 *inst/CITATION
 6adffb363933c6fc9404931a580d156f *inst/archboldbahia-cli.jpg
 4c52b768a1a5e7e67a39169925a3d515 *inst/doc/Launch-xROI.R
 e92995e90aee1f7ecf2b012ffcaf84d3 *inst/doc/Launch-xROI.Rmd
-2c40d2d892f8703b988b5800c5fcaff4 *inst/doc/Launch-xROI.html
+8807269ed2e551cb5fe4fa48e01b755a *inst/doc/Launch-xROI.html
 c1a552e363845a402d95fdcf569c59ad *inst/dukehw-cli.jpg
 03dfc2a1b7a3a5aa6aa2ebfa2191999d *inst/dukehw-mask.tif
 e08b82b0635a3266713866fbf09cf142 *inst/dukehw.jpg
@@ -73,5 +73,6 @@ fce5f6a2fddd3b0cb3e755f55a126614 *man/plotCLArray.Rd
 633113d80c61093735948c6455d92b8d *man/rasterizeROI.Rd
 00f0676b8b3e06b65b25f9278c992bc4 *man/writeROI.Rd
 66c2a63ce43fcc2efb84444ac16ca20d *tests/testthat.R
+a37070f90207f3a472b928514755d63e *tests/testthat/Rplots.pdf
 ee56090d5f07e328bda8370c7f73c89f *tests/testthat/testxROI.R
 e92995e90aee1f7ecf2b012ffcaf84d3 *vignettes/Launch-xROI.Rmd
